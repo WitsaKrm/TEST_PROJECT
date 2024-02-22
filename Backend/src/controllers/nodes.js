@@ -1,5 +1,6 @@
 const DB = require("../../configurations/db");
 const Formatted = require("./formatted.data");
+const short = require("short-uuid");
 // const TB_N = "n_devices";
 const TB_N = "devices";
 const TB_SS = "data_node";
@@ -182,7 +183,7 @@ const putMode = async (req, res) => {
   console.log("put mode");
   console.log(req.params.nodeId);
   const nodeId = req.params.nodeId;
-  const data = req.body
+  const data = req.body;
   const date = Formatted.fomattedDate();
   const time = Formatted.fomattedTime();
   const sql = `UPDATE ${TB_MD} SET
@@ -194,21 +195,21 @@ const putMode = async (req, res) => {
   start_time = ?
   WHERE devices_node_id = ?`;
 
-const value = [ 
- data.pump_st,
- data.current_level,
- data.go_level,
- data.st_mode,
- date,
- time,
- nodeId,
-];
-DB.query(sql, value, (err, result) => {
+  const value = [
+    data.pump_st,
+    data.current_level,
+    data.go_level,
+    data.st_mode,
+    date,
+    time,
+    nodeId,
+  ];
+  DB.query(sql, value, (err, result) => {
     if (err) {
       console.error("Error updating mode:", err);
       res.status(500).json({ status: "Error", message: err.message });
     } else {
-      console.log(result)
+      console.log(result);
 
       const count = result.affectedRows;
       if (count > 0) {
@@ -224,6 +225,44 @@ DB.query(sql, value, (err, result) => {
   });
 };
 
+const addDevice = async (req, res) => {
+  console.log("addDevice");
+  const uniqeId = short.generate();
+  console.log(uniqeId);
+  const ID = req.params.nodeId;
+  const data = req.body;
+  const insertsql = `
+    INSERT INTO ${TB_N} (d_name, type, lat, lon, status, user_id, uniqe_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+  const insertValues = [
+    data.d_name,
+    data.type,
+    data.lat,
+    data.lon,
+    1,
+    data.user_id,
+    uniqeId,
+  ];
+
+  DB.query(insertsql, insertValues, (err, value) => {
+    if (err) {
+      console.error(err);
+      return res
+        .status(500)
+        .json({ status: "error", message: err.message, code: "500" });
+    }
+    return res.json({
+      status: "Success",
+      code: "200",
+      message: "Device added successfully",
+    });
+  });
+};
+
+
+
+
 module.exports = {
   getDevices,
   getDevicesByUID,
@@ -234,4 +273,5 @@ module.exports = {
   postSetDataMode,
   getModeData,
   putMode,
+  addDevice,
 };

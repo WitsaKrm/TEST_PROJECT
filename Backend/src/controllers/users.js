@@ -63,17 +63,18 @@ const userRegister = async (req, res) => {
 };
 const userLogin = async (req, res) => {
   console.log("userLogin");
-  const data = req.body;
-  const pwd = hashmd5(data.password);
-  const username = data.username;
-  console.log(pwd);
-  const sql = `SELECT * FROM ${TB} WHERE username = ?`;
-  const value = [username];
-  DB.query(sql, value, (err, result) => {
-    if (err) {
-      console.error("Error Login:", err);
-      res.status(500).json({ status: "Error", message: err.message });
-    } else if (result.length === 0) {
+  try {
+    const data = req.body;
+    const pwd = hashmd5(data.password);
+    const username = data.username;
+
+    console.log(pwd);
+    const sql = `SELECT * FROM ${TB} WHERE username = ?`;
+    const value = [username];
+
+    const [result, fields] = await DB.promise().query(sql, value);
+
+    if (result.length === 0) {
       res.status(404).json({ status: "User not found" });
       return;
     }
@@ -81,27 +82,30 @@ const userLogin = async (req, res) => {
     console.log(result[0].password);
 
     const isLogin = comparePasswords(result[0].password, pwd);
-    console.log({
-      user_id: result[0].user_id,
-      username: result[0].username,
-      fistname: result[0].f_name,
-    });
+
     if (isLogin) {
-      const token = jwt.sign(
-        {
-          user_id: result[0].user_id,
-          username: result[0].username,
-          firstname: result[0].f_name,
-          role: result[0].role,
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: "12h" }
-      );
+      const token = generateToken(result[0]);
       res.status(200).json({ status: "Success", msg: "Login success", token });
     } else {
       res.status(401).json({ status: "Error", msg: "Password incorrect" });
     }
-  });
+  } catch (err) {
+    console.error("Error Login:", err);
+    res.status(500).json({ status: "Error", message: err.message });
+  }
+};
+// Function to generate JWT token
+const generateToken = (user) => {
+  return jwt.sign(
+    {
+      user_id: user.user_id,
+      username: user.username,
+      firstname: user.f_name,
+      role: user.role,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "12h" }
+  );
 };
 const authen = async (req, res) => {
   try {
@@ -110,7 +114,7 @@ const authen = async (req, res) => {
     console.log(decoded);
     res.status(200).json({ status: "Verify", decoded });
   } catch (err) {
-    res.status(401).json({ status: "error", msg: err.message });
+    res.status(401).json({ status: "Error", msg: err.message });
   }
 };
 const getUsers = async (req, res) => {

@@ -4,7 +4,8 @@ import style from "./map.module.css";
 const Maps = (props) => {
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://api.longdo.com/map/?key=d50aa5bfdd20b1c8c14056d41f9479cd"; // Replace with your actual LongdoMap API key
+    script.src =
+      "https://api.longdo.com/map/?key=d50aa5bfdd20b1c8c14056d41f9479cd"; // Replace with your actual LongdoMap API key
     script.async = true;
     script.onload = () => {
       // LongdoMap library is loaded
@@ -36,7 +37,11 @@ const Maps = (props) => {
     };
   }, [props.lon, props.lat]);
 
-  return <div id="longdo-map" className={style.map_container}></div>;
+  return (
+    <>
+      <div id="longdo-map" className={style.map_container}></div>
+    </>
+  );
 };
 
 export default Maps;

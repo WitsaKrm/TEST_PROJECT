@@ -39,6 +39,10 @@ th {
     cursor: pointer;
 
 }
+.sett{
+display: flex;
+justify-content: flex-end;
+}
 .edit{
     color: rgb(52, 117, 35);
     margin-right: 16px;
@@ -47,7 +51,14 @@ th {
 }
 .delete{
     color: rgb(179, 17, 17);
-    margin-right: 8px;
+    
+    margin-right: 16px;
+    cursor: pointer;
+
+}
+.adddevice{
+    color: rgb(179, 155, 17);
+    margin-right: 16px;
     cursor: pointer;
 
 }

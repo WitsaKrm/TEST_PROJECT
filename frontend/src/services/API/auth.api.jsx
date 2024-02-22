@@ -5,7 +5,7 @@ import endpoint from "../../services/API/axios";
 export async function authenticate(AUTH_URL, history) {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`https://localhost:9000${AUTH_URL}`, {
+      const response = await fetch(`http://localhost:9000${AUTH_URL}`, {
 
         method: "POST",
         headers: {
