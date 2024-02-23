@@ -20,13 +20,15 @@ const CHART_SS_URL = "/chart_ss";
 const SensersPage = () => {
   const { nodeId } = useParams();
   const [sensers, setSensers] = useState([]);
+  const [onlyDate, setDate] = useState([]);
   const [chartSensers, setChartSensers] = useState([]);
   const [oneChart, setOneChart] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedSensor, setSelectedSensor] = useState("");
   const [showAllChart, setShowAllChart] = useState(false); // State to track "All" button click
-
-  // Use useLocation to access query parameters
+  // console.log(sensers[0]);
+  // const oDateString = sensers[0].date;
+  // const dateOnly = oDateString.split("T")[0];
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const lat = queryParams.get("lat");
@@ -36,7 +38,7 @@ const SensersPage = () => {
     const user = localStorage.getItem("UID");
     async function fetchData() {
       try {
-        await FetchSensers(setSensers, SS_URL, `${nodeId}`);
+        await FetchSensers(setSensers, setDate, SS_URL, `${nodeId}`);
         await FetchChart(setChartSensers, CHART_SS_URL, `${nodeId}`);
         setIsLoading(false);
       } catch (error) {
@@ -151,7 +153,7 @@ const SensersPage = () => {
                 nameTH={data.nameTH}
                 src={data.svg}
                 values={sensers.map((value) => value[data.key])}
-                date={sensers.map((date) => date[data.date])}
+                date={onlyDate}
                 time={sensers.map((time) => time[data.time])}
                 unit={data.unit}
                 handleSenserClick={() => handleSenserClick(data.key)}

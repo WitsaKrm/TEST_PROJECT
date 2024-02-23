@@ -6,7 +6,7 @@ const fomattedDate =(req, res) => {
     const day = dateInGMTPlus7.getUTCDate().toString().padStart(2, '0');
     const month = (dateInGMTPlus7.getUTCMonth() + 1).toString().padStart(2, '0');
     const year = dateInGMTPlus7.getUTCFullYear();
-    const formattedDate = `${year}-${month}-${day}`;
+    const formattedDate = `${day}-${month}-${year}`;
 
     console.log(formattedDate);
     return formattedDate;

@@ -1,52 +1,56 @@
-
 import API from "../../services/API/axios";
 
-export function FetchDevices(SET,URL) {
-    const fetchNodes = async () => {
-        try {
-          const res = await API.get(URL);
-          SET(res.data.nodes);
-        } catch (error) {
-          console.error("Failed to fetch nodes:", error);
-        }
-      };
-      fetchNodes()
+export function FetchDevices(SET, URL) {
+  const fetchNodes = async () => {
+    try {
+      const res = await API.get(URL);
+      SET(res.data.nodes);
+    } catch (error) {
+      console.error("Failed to fetch nodes:", error);
+    }
+  };
+  fetchNodes();
 }
-export function FetchDevicesByUid(SET,URL,ID) {
-    const fetchNodes = async () => {
-        try {
-          const res = await API.get(`${URL}/${ID}`);
-          SET(res.data.devices);
-        } catch (error) {
-          console.error("Failed to fetch nodes:", error);
-        }
-      };
-      fetchNodes()
-}
-export function FetchSensers (SET,URL,ID) {
-    const fetchSensers = async () => {
+export function FetchDevicesByUid(SET, URL, ID) {
+  const fetchNodes = async () => {
     try {
       const res = await API.get(`${URL}/${ID}`);
+      SET(res.data.devices);
+    } catch (error) {
+      console.error("Failed to fetch nodes:", error);
+    }
+  };
+  fetchNodes();
+}
+export function FetchSensers(SET, SETDATE, URL, ID) {
+  const fetchSensers = async () => {
+    try {
+      const res = await API.get(`${URL}/${ID}`);
+      console.log(res.data.senser[0].date);
+      const oDateString = res.data.senser[0].date;
+      const dateOnly = oDateString.split("T")[0];
+      SETDATE(dateOnly);
       SET(res.data.senser || []);
     } catch (error) {
       console.error("Failed to fetch senser:", error);
     }
   };
-  fetchSensers()
+  fetchSensers();
 }
-export function FetchChart (SET,URL,ID) {
-    const fetchChart = async () => {
+export function FetchChart(SET, URL, ID) {
+  const fetchChart = async () => {
     try {
       const res = await API.get(`${URL}/${ID}`);
+      console.log(res.data.chart );
       SET(res.data.chart || []);
     } catch (error) {
       console.error("Failed to fetch senser:", error);
     }
   };
-  fetchChart()
+  fetchChart();
 }
-export function FetchOneChart (SET,URL,data,ID) {
-    const fetchOneChart = async () => {
+export function FetchOneChart(SET, URL, data, ID) {
+  const fetchOneChart = async () => {
     try {
       const res = await API.get(`${URL}/${ID}/${data}`);
       SET(res.data.oneChart || []);
@@ -54,6 +58,5 @@ export function FetchOneChart (SET,URL,data,ID) {
       console.error("Failed to fetch senser:", error);
     }
   };
-  fetchOneChart()
+  fetchOneChart();
 }
-
