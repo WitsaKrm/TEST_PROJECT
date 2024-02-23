@@ -18,27 +18,6 @@ export function APIdataUsers(setUsers, USERS_URL, setLoading) {
   }, [setUsers, USERS_URL, setLoading]);
 }
 
-// export function UpdateUser({ userId, newDataGroup, setSucc, USERS_URL }) {
-//   console.log("UpdateUser");
-//   useEffect(() => {
-//     const updateUserRequest = async () => {
-//       try {
-//         const res = await endpoint.put(`${USERS_URL}/${userId}`, newDataGroup);
-//         // Assuming the endpoint URL should include the `userId` and the data to update
-//         setSucc(true); // Set to true upon successful update
-//       } catch (error) {
-//         console.error("Failed to update user:", error);
-//         setSucc(false); // Set to false in case of an error
-//       }
-//     };
-
-//     updateUserRequest();
-//   }, [userId, newDataGroup, USERS_URL, setSucc]);
-
-//   // This component doesn't need to render anything, so you can return null.
-//   return null;
-// }
-
 export function APIdeleteUser (USERS_URL, userID, selectedUser){
   useEffect(() => {
     const DeleteUser = async () => {

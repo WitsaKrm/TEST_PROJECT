@@ -183,6 +183,7 @@ const putMode = async (req, res) => {
   console.log("put mode");
   console.log(req.params.nodeId);
   const nodeId = req.params.nodeId;
+  console.log(nodeId);
   const data = req.body;
   const date = Formatted.fomattedDate();
   const time = Formatted.fomattedTime();
@@ -205,6 +206,7 @@ const putMode = async (req, res) => {
     nodeId,
   ];
   DB.query(sql, value, (err, result) => {
+    console.log(result);
     if (err) {
       console.error("Error updating mode:", err);
       res.status(500).json({ status: "Error", message: err.message });

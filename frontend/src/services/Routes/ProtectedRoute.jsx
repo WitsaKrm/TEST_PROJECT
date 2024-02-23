@@ -1,7 +1,7 @@
 // ProtectedRoute.js
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { isAuthenticated ,getUserRole } from "../Auth.service"; // Import your authentication service
+import { isAuthenticated ,getUserRole } from "../Auth.service";
 
 const ProtectedRoute = ({ component: Component, isAdmin, ...rest }) => (
     <Route

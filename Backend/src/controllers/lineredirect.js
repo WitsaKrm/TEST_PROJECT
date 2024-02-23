@@ -17,11 +17,12 @@ const redirect = async (req, res) => {
 const notify = async (req, res) => {
   console.log('in notify');
   console.log(req.body.token);
+  const message = `${req.body.username} อุปกรณ์ : ${req.body.d_name} : ${req.body.message}`
   try {
     if(req.body.token === undefined){
       return res.status(401).send({ message: "Notify Unsuccess." });
     }else{
-      await line.sendLineNotify(req.body.message, req.body.token);
+      await line.sendLineNotify(message, req.body.token);
     return res.status(200).send({ message: "Notify Successfully." });
     }
   } catch (error) {
