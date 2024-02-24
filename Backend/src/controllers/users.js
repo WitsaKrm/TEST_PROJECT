@@ -117,7 +117,7 @@ const authen = async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
+    // console.log(decoded);
     res.status(200).json({ status: "Verify", decoded });
   } catch (err) {
     res.status(401).json({ status: "Error", msg: err.message });
