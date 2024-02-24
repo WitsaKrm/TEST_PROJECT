@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import style from "./sensers.module.css";
 
   const SenSers = (props) => {
-    // const oDateString = Array.isArray(props.date) ? props.date[0] : props.date;
-    // const dateOnly = oDateString.split("T")[0];
     return (
       <button className={style.sscontainer} onClick={props.handleSenserClick}>
         <div className={style.ssname}>

@@ -3,7 +3,6 @@ import style from "./waterlevel.module.css";
 
 const WaterAnimation = (props) => {
   const [waterHeight, setWaterHeight] = useState(0);
-  console.log(props);
   const oDateString = props.data.start_date;
   const dateOnly = oDateString.split("T")[0];
   useEffect(() => {
