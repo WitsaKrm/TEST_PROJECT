@@ -20,10 +20,10 @@ const IndexPage = () => {
   const [user, setUser] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [uid, setUID] = useState(null);
-
+  authenticate(AUTH_URL, history, "indexpage");
   useEffect(() => {
     async function fetchData() {
-      authenticate(AUTH_URL, history);
+      // authenticate(AUTH_URL, history);
       SETUIDLocal();
       const UID = localStorage.getItem("UID");
       setUID(UID);
