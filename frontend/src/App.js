@@ -2,11 +2,13 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Routes from "./services/Routes/routes.service";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import '../../frontend/src/App.css'
 
 function App() {
   return (
     <HelmetProvider>
-    <div className="container">
+      <div className="bg">
+      <div className="container" style={{ height:'100vh'}}>
       <Helmet>
         <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -17,6 +19,8 @@ function App() {
         <Routes />
       </Router>
     </div>
+      </div>
+    
     </HelmetProvider>
   );
 }
