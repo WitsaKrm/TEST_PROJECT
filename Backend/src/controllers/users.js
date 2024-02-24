@@ -1,19 +1,22 @@
 const DB = require("../../configurations/db");
 const Formatted = require("./formatted.data");
+const bcrypt = require("bcrypt");
 const TB = "users";
-const { hashmd5 } = require("../../configurations/middlefunc");
+const {
+  hashmd5,
+  hash,
+  pwdCompare,
+} = require("../../configurations/middlefunc");
 const jwt = require("jsonwebtoken");
 // const SECRET = "KRMwitsaKrm";
 
-async function comparePasswords(dbPassword, enteredPassword) {
-  return dbPassword === enteredPassword;
-}
+// async function comparePasswords(dbPassword, enteredPassword) {
+//   return dbPassword === enteredPassword;
+// }
 const userRegister = async (req, res) => {
   console.log("userRegister");
   const data = req.body;
-  console.log(data);
-  const pwd = hashmd5(data.password);
-  console.log(pwd);
+  const pwd = await hash(data.password);
   const Date = Formatted.fomattedDate();
 
   const countQuery = `SELECT COUNT(*) as count FROM ${TB} WHERE username = ?`;
@@ -62,31 +65,34 @@ const userRegister = async (req, res) => {
   });
 };
 const userLogin = async (req, res) => {
-  console.log("userLogin");
   try {
     const data = req.body;
-    const pwd = hashmd5(data.password);
+    console.log("data : ", data);
+    const pwd = data.password;
     const username = data.username;
-
-    console.log(pwd);
     const sql = `SELECT * FROM ${TB} WHERE username = ?`;
     const value = [username];
-
     const [result, fields] = await DB.promise().query(sql, value);
-
     if (result.length === 0) {
       res.status(404).json({ status: "User not found" });
       return;
     }
-
-    console.log(result[0].password);
-
-    const isLogin = comparePasswords(result[0].password, pwd);
-
+    console.log("PWD : ", data.password);
+    if (typeof result[0].password !== "string") {
+      console.log("!== STR");
+      return res
+        .status(500)
+        .json({ status: "Error", msg: "Invalid stored password format" });
+    }
+    const storedPwd = String(result[0].password);
+    console.log("Stored Password : ", storedPwd);
+    const isLogin = await pwdCompare(storedPwd, pwd);
     if (isLogin) {
+      console.log('Success');
       const token = generateToken(result[0]);
       res.status(200).json({ status: "Success", msg: "Login success", token });
     } else {
+      console.log('Unsuccessful');
       res.status(401).json({ status: "Error", msg: "Password incorrect" });
     }
   } catch (err) {
