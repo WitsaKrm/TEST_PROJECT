@@ -5,7 +5,8 @@ export async function notifyRegis(userId) {
     console.log('on notifyRegis userId: = ' ,userId);
 
     const clientId = 'PvjrBLwlp118pmtfbi8Oii';
-    const engine = 'https://localhost:9000';
+    // const engine = 'https://localhost:9000';
+    const engine = 'https://http://172.20.10.8:9000';
     
     const userID = userId;
 

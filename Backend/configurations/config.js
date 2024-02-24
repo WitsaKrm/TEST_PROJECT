@@ -5,8 +5,9 @@ const config = {
     },
     db: {
       type: 'mysql',
-      host: 'localhost',
-      user: 'root',
+      // host: 'localhost',
+      host: '172.20.10.8',
+      user: 'roott',
       pwd: 'root',
       MAX_POOL: 10,
       MIN_POOL: 0,

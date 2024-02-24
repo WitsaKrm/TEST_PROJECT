@@ -11,7 +11,7 @@ const startApp = async () => {
   const app = buildApp(appOptions);
 
   const port = process.env.DB_PORT || 9000;
-  const host = process.env.DB_HOST || "localhost";
+  const host = process.env.DB_HOST || "172.20.10.8";
   nodeRoutes(app);
   userRoutes(app);
   try {
