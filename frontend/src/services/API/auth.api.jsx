@@ -2,7 +2,18 @@ import Swal from "sweetalert2";
 import endpoint from "../../services/API/axios";
 
 
-export async function authenticate(AUTH_URL, history) {
+export async function authenticate(AUTH_URL, history ,PAGE) {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  })
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`http://172.20.10.8:9000${AUTH_URL}`, {
@@ -16,28 +27,32 @@ export async function authenticate(AUTH_URL, history) {
       });
   
       if (response.status === 200) {
-        Swal.fire({
-          title: "ยืนยันตัวตนเสร็จสิ้น",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 500,
-        });
+        if(PAGE === 'indexpage'){
+          Toast.fire({
+            icon: "success",
+            title: "ยืนยันตัวตนเสร็จสิ้น",
+          })
+        }
+
       } else {
-        // Authentication failed
-        localStorage.removeItem("token");
-        localStorage.removeItem("UID");
-        history.push({
-          pathname: "/login",
-        });
+        Toast.fire({
+          icon: "error",
+          text: "เกิดข้อผิดพลาดระหว่างการตรวจสอบการเข้าถึงข้อมูล",
+          title: "ไม่สามารถยืนยันตัวตน",
+        }).then(()=>{
+          localStorage.removeItem("token");
+          localStorage.removeItem("UID");
+          history.push({
+            pathname: "/login",
+          });
+        })
       }
     } catch (err) {
       console.error("Authentication error:", err);
-      Swal.fire({
-        title: "Authentication Error",
-        text: "An error occurred during authentication.",
+       Toast.fire({
         icon: "error",
-        showConfirmButton: false,
-        timer: 500,
+        text: "An error occurred during authentication.",
+        title: "ไม่สามารถยืนยันตัวตน",
       }).then(() => {
         localStorage.removeItem("token");
         localStorage.removeItem("UID");
