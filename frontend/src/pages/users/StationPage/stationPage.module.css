@@ -8,6 +8,9 @@ text-transform: uppercase
 .btt{
     margin: 16px 24px;
 }
+.container{
+  height: 150vh;
+}
 .btn:disabled {
   /* Styles for the disabled "auto" button */
   background-color: #ccc;
