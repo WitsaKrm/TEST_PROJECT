@@ -9,8 +9,10 @@ import LevelSlide from "../../../components/waterlevel/levelslide";
 import Maps from "../../../components/maps/map";
 import { FetchMode, SetModeNewStation } from "../../../services/API/mode.api";
 import endpoint from "../../../services/API/axios";
+import { authenticate } from "../../../services/API/auth.api";
 
 const MODE_URL = "/mode";
+const AUTH_URL = "/authen";
 
 const StationPage = () => {
   const { nodeId } = useParams();
@@ -21,12 +23,11 @@ const StationPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [succ, setSucc] = useState(false);
   const [error, setError] = useState("");
-
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const lat = queryParams.get("lat");
   const lon = queryParams.get("lon");
-
+  authenticate(AUTH_URL, history, "stationpage");
   useEffect(() => {
     async function fetchData() {
       try {
